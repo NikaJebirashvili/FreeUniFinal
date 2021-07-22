@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">FreeUniFinalProject</string>
+    <string name="app_name">FreeFinalProject</string>
+    <string name="enter_your_nickname">Enter your Nickname</string>
+    <string name="enter_your_password">Enter your Password</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="sign_up">SIGN UP</string>
+    <string name="not_registered">Not Registered?</string>
+    <string name="what_i_do">What i do</string>
+    <string name="chat">Chat</string>
+    <string name="profile">Profile</string>
 </resources>

@@ -1,7 +1,8 @@
-package ge.njebirashvili.freeunifinalproject
+package ge.njebirashvili.freeunifinalproject.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ge.njebirashvili.freeunifinalproject.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
