@@ -1,0 +1,2 @@
+rootProject.name = "FreeUniFinalProject"
+include ':app'

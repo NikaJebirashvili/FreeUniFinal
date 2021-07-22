@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1098750249410",
+    "project_id": "freeunifinalproject",
+    "storage_bucket": "freeunifinalproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098750249410:android:9f298896f57b8e28aaae5b",
+        "android_client_info": {
+          "package_name": "ge.njebirashvili.freeunifinalproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098750249410-ud8gta5vvdi1ocndirfcqgd2egrq5356.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbsyVXLXDiqGtcPXBLKMtH09rZLVKTlcA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1098750249410-ud8gta5vvdi1ocndirfcqgd2egrq5356.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
