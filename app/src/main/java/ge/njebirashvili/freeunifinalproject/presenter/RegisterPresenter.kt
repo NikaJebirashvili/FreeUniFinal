@@ -1,11 +1,7 @@
 package ge.njebirashvili.freeunifinalproject.presenter
 
-import com.google.firebase.auth.FirebaseAuth
-import dagger.hilt.EntryPoint
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.scopes.ActivityScoped
 import ge.njebirashvili.freeunifinalproject.views.RegisterView
-import ge.njebirashvili.mysdf.repository.AuthRepository
+import ge.njebirashvili.freeunifinalproject.repository.AuthRepository
 
 import kotlinx.coroutines.*
 import java.lang.Exception

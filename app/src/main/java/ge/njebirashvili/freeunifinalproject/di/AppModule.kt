@@ -1,4 +1,4 @@
-package ge.njebirashvili.mysdf.di
+package ge.njebirashvili.freeunifinalproject.di
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

@@ -1,6 +1,5 @@
 package ge.njebirashvili.freeunifinalproject.ui
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -12,7 +11,7 @@ import ge.njebirashvili.freeunifinalproject.utils.Constants.MIN_USERNAME_LENGTH
 import ge.njebirashvili.freeunifinalproject.utils.goOnActivity
 import ge.njebirashvili.freeunifinalproject.utils.setVisible
 import ge.njebirashvili.freeunifinalproject.views.RegisterView
-import ge.njebirashvili.mysdf.repository.AuthRepository
+import ge.njebirashvili.freeunifinalproject.repository.AuthRepository
 import javax.inject.Inject
 
 

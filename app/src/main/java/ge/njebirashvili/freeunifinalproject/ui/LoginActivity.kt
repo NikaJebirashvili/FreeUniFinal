@@ -7,13 +7,12 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
-import ge.njebirashvili.freeunifinalproject.R
 import ge.njebirashvili.freeunifinalproject.databinding.ActivityLoginBinding
 import ge.njebirashvili.freeunifinalproject.presenter.LoginPresenter
 import ge.njebirashvili.freeunifinalproject.utils.goOnActivity
 import ge.njebirashvili.freeunifinalproject.utils.setVisible
 import ge.njebirashvili.freeunifinalproject.views.LoginView
-import ge.njebirashvili.mysdf.repository.AuthRepository
+import ge.njebirashvili.freeunifinalproject.repository.AuthRepository
 import javax.inject.Inject
 
 @AndroidEntryPoint
