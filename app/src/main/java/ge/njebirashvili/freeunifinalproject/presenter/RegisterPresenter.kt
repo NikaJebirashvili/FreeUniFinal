@@ -13,11 +13,11 @@ class RegisterPresenter @Inject constructor(
     private val coroutineScope : CoroutineScope = CoroutineScope(Dispatchers.Main)
 ) {
 
-     fun firebaseRegister(email :String,username : String, password : String) {
+     fun firebaseRegister(email :String,username : String,whatIDo: String, password : String) {
          coroutineScope.launch {
              try {
                  registerView.loadingState(true)
-                 val result = repository.register(email,username,password)
+                 val result = repository.register(email,username,password,whatIDo)
                  if(result.user != null) {
                      registerView.showToast("You have Successfully registered")
                      registerView.loadingState(false)

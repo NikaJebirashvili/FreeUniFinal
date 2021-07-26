@@ -16,12 +16,13 @@ class AuthRepository @Inject constructor(
     suspend fun register(
         email : String,
         username : String,
+        whatIDo :String,
         password : String,
     ) : AuthResult {
         return withContext(Dispatchers.IO){
                 val result = auth.createUserWithEmailAndPassword(email,password).await()
                 val uid = result.user?.uid!!
-                val user = User(uid,username)
+                val user = User(uid,username,whatIDo)
                 firestore.collection("users").document(uid).set(user).await()
                 result
         }

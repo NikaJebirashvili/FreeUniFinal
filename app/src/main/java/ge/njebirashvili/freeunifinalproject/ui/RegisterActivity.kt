@@ -37,6 +37,13 @@ class RegisterActivity : AppCompatActivity() , RegisterView{
                     return@setOnClickListener
                 }
             }
+            if(binding.whatIDoEditText.text.isEmpty()){
+                binding.whatIDoEditText.apply {
+                    error = "Please Fill"
+                    requestFocus()
+                    return@setOnClickListener
+                }
+            }
 
             if(binding.emailEditText.text.isEmpty()) {
                 binding.emailEditText.apply {
@@ -55,7 +62,8 @@ class RegisterActivity : AppCompatActivity() , RegisterView{
             registerPresenter.firebaseRegister(
                 binding.emailEditText.text.toString(),
                 binding.nicknameEditText.text.toString(),
-                binding.passwordEditText.text.toString()
+                binding.passwordEditText.text.toString(),
+                binding.whatIDoEditText.text.toString()
             )
         }
         binding.registerBackButton.setOnClickListener { onBackPressed() }

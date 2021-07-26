@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,8 +34,8 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
     lateinit var binding: FragmentChatListBinding
     @Inject lateinit var auth: FirebaseAuth
     @Inject lateinit var firestore: FirebaseFirestore
-    @Inject
-    lateinit var storage: FirebaseStorage
+    @Inject lateinit var storage: FirebaseStorage
+    @Inject lateinit var realtime : FirebaseDatabase
     lateinit var chatListPresenter: ChatListPresenter
     val searchAdapter = SearchAdapter()
 
@@ -50,8 +51,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        chatListPresenter = ChatListPresenter(this, MainRepository(auth, firestore, storage))
+        chatListPresenter = ChatListPresenter(this, MainRepository(auth, firestore, storage,realtime))
         initRecyclerView()
+
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             var job : Job? = null
@@ -91,7 +93,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = searchAdapter.apply {
                 setOnClickListener {
-                    findNavController().navigate(ChatFragmentDirections.actionChatFragmentToMessagesFragment())
+                    findNavController().navigate(ChatFragmentDirections.actionChatFragmentToMessagesFragment(it))
                 }
             }
         }

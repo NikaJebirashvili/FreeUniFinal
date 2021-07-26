@@ -12,11 +12,13 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ChatViewHolder>() {
 
     inner class ChatViewHolder(private val binding: ListItemChatBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(user : User){
-            itemView.setOnClickListener { listener?.invoke() }
+            itemView.setOnClickListener { listener?.invoke(user) }
             Glide.with(itemView)
                 .load(user.profilePictureUrl)
                 .into(binding.circleImageView)
             binding.listItemName.text = user.username
+            binding.listItemMessage.text = user.whatIDo
+            binding.listItemTime.text = ""
         }
     }
 
@@ -36,9 +38,9 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.ChatViewHolder>() {
         notifyDataSetChanged()
     }
 
-    var listener : (() -> Unit)? = null
+    var listener : ((user : User) -> Unit)? = null
 
-    fun setOnClickListener(listener : () -> Unit) {
+    fun setOnClickListener(listener : (user : User) -> Unit) {
         this.listener = listener
     }
 

@@ -18,6 +18,10 @@
     <fragment
         android:id="@+id/messagesFragment"
         android:name="ge.njebirashvili.freeunifinalproject.ui.fragments.MessagesFragment"
-        android:label="MessagesFragment" />
+        android:label="MessagesFragment" >
+        <argument
+            android:name="user"
+            app:argType="ge.njebirashvili.freeunifinalproject.model.User" />
+    </fragment>
 
 </navigation>

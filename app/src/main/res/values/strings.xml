@@ -9,5 +9,6 @@
     <string name="chat">Chat</string>
     <string name="profile">Profile</string>
     <string name="email">Enter your Email</string>
+    <string name="message">Message</string>
 
 </resources>

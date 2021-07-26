@@ -53,7 +53,9 @@ class LoginActivity : AppCompatActivity() , LoginView {
             loginPresenter.firebaseLogin(
                 binding.nicknameEditText.text.toString(),
                 binding.loginPasswordEditText.text.toString()
-            )
+            ).also {
+                finish()
+            }
         }
         binding.loginRegisterButton.setOnClickListener {
             goOnActivity(RegisterActivity::class.java)
