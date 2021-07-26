@@ -2,9 +2,9 @@ package ge.njebirashvili.freeunifinalproject.ui.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
 import ge.njebirashvili.freeunifinalproject.R
+import ge.njebirashvili.freeunifinalproject.adapter.ChatListAdapter
 import ge.njebirashvili.freeunifinalproject.adapter.SearchAdapter
 import ge.njebirashvili.freeunifinalproject.databinding.FragmentChatListBinding
 import ge.njebirashvili.freeunifinalproject.model.User
@@ -37,7 +38,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
     @Inject lateinit var storage: FirebaseStorage
     @Inject lateinit var realtime : FirebaseDatabase
     lateinit var chatListPresenter: ChatListPresenter
-    val searchAdapter = SearchAdapter()
+    val chatListAdapter = ChatListAdapter()
+    val searchListAdapter = SearchAdapter()
+    lateinit var currentUser : User
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,8 +55,16 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
         super.onViewCreated(view, savedInstanceState)
 
         chatListPresenter = ChatListPresenter(this, MainRepository(auth, firestore, storage,realtime))
-        initRecyclerView()
+        initUserRecyclerView()
+        initSearchRecyclerView()
+        binding.usersRecyclerView.setVisible(true)
+        binding.searchRecyclerView.setVisible(false)
 
+        lifecycleScope.launch {
+            currentUser = chatListPresenter.getUser(auth.uid!!)!!
+            val list = chatListPresenter.getAllFollowedUsers(currentUser.follows)
+            chatListAdapter.setData(list)
+        }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             var job : Job? = null
@@ -66,7 +77,14 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
                 job = lifecycleScope.launch {
                     delay(SEARCH_TIME_DELAY)
                     newText?.let {
-                        searchAdapter.setData(chatListPresenter.searchForUser(it))
+                        if(it == ""){
+                            binding.usersRecyclerView.setVisible(true)
+                            binding.searchRecyclerView.setVisible(false)
+                        } else {
+                            binding.usersRecyclerView.setVisible(false)
+                            binding.searchRecyclerView.setVisible(true)
+                        }
+                        searchListAdapter.setData(chatListPresenter.searchForUser(it))
                     }
                 }
                 return true
@@ -88,10 +106,21 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
         return resultList
     }
 
-    fun initRecyclerView() {
+    private fun initUserRecyclerView() {
         binding.usersRecyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
-            adapter = searchAdapter.apply {
+            adapter = chatListAdapter.apply {
+                setOnClickListener {
+                    findNavController().navigate(ChatFragmentDirections.actionChatFragmentToMessagesFragment(it))
+                }
+            }
+        }
+    }
+
+    private fun initSearchRecyclerView() {
+        binding.searchRecyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = searchListAdapter.apply {
                 setOnClickListener {
                     findNavController().navigate(ChatFragmentDirections.actionChatFragmentToMessagesFragment(it))
                 }

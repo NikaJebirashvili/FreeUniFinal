@@ -21,4 +21,18 @@ class ChatListPresenter @Inject constructor(
         chatListView.loadingState(false)
         result
     }
+
+    suspend fun getAllFollowedUsers(uids : List<String>) = withContext(Dispatchers.Main) {
+        chatListView.loadingState(true)
+        val result = repository.getUsers(uids)
+        chatListView.loadingState(false)
+        result
+    }
+
+    suspend fun getUser(uid : String) = withContext(Dispatchers.Main){
+        chatListView.loadingState(true)
+        val user = repository.getUser(uid)
+        chatListView.loadingState(false)
+        user
+    }
 }

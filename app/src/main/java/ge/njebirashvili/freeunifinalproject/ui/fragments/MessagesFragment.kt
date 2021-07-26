@@ -85,7 +85,7 @@ class MessagesFragment : Fragment(R.layout.fragment_messages), ChatView {
                 )
                 adapter.setData(list)
             }
-
+            binding.messageEditText.setText("")
         }
 
 

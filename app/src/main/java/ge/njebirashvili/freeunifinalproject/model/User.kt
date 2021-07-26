@@ -13,5 +13,7 @@ data class User (
     val profilePictureUrl : String = DEFAULT_PROFILE_IMAGE,
     var follows : List<String> = listOf(),
     @get:Exclude
-    var isFollowing : Boolean = false
+    var isFollowing : Boolean = false,
+    var lastSentMessage : String = "",
+    var lastSentMessageDate : Long = 0L
 ) : Serializable

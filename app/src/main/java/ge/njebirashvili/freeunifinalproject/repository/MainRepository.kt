@@ -1,5 +1,6 @@
 package ge.njebirashvili.freeunifinalproject.repository
 
+import android.text.BoringLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -30,10 +31,29 @@ class MainRepository @Inject constructor(
 
     suspend fun getUser(uid: String) = withContext(Dispatchers.IO) {
         val user = usersRef.document(uid).get().await().toObject(User::class.java)
-        val currentUid = auth.uid!!
-        val currentUser = usersRef.document(currentUid).get().await().toObject(User::class.java)!!
-        user?.isFollowing = uid in currentUser.follows
         user
+    }
+
+    suspend fun toggleFollowForUser(uid: String) : Boolean = withContext(Dispatchers.IO) {
+        var isFollowing = false
+        firestore.runTransaction { transaction ->
+            val currentUid = auth.uid!!
+            val currentUser = transaction.get(usersRef.document(currentUid)).toObject(User::class.java)!!
+            isFollowing = uid in currentUser.follows
+            val newFollows: List<String> =
+                if (!isFollowing) currentUser.follows + uid else currentUser.follows
+            transaction.update(usersRef.document(currentUid), "follows", newFollows)
+        }.await()
+        !isFollowing
+    }
+
+    suspend fun toggleLastSentMessage(message: Message) = withContext(Dispatchers.IO){
+        firestore.runTransaction { transaction ->
+            transaction.update(usersRef.document(auth.uid!!), "lastSentMessage", message.message)
+            transaction.update(usersRef.document(auth.uid!!), "lastSentMessageDate", message.sentDate)
+            transaction.update(usersRef.document(message.sender), "lastSentMessage", message.message)
+            transaction.update(usersRef.document(message.sender), "lastSentMessageDate", message.sentDate)
+        }
     }
 
 
@@ -47,7 +67,7 @@ class MainRepository @Inject constructor(
     }
 
     suspend fun addChatMessage(message: String, uid: String) = withContext(Dispatchers.IO) {
-        val newMessage = Message(message, auth.uid!!,System.currentTimeMillis())
+        val newMessage = Message(message, auth.uid!!, System.currentTimeMillis())
         realtime.getReference(auth.uid!!).child(uid).child("message" + System.currentTimeMillis())
             .setValue(newMessage)
         realtime.getReference(uid).child(auth.uid!!).child("message" + System.currentTimeMillis())
