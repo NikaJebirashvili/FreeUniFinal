@@ -10,5 +10,8 @@
     <string name="profile">Profile</string>
     <string name="email">Enter your Email</string>
     <string name="message">Message</string>
+    <string name="username">Username</string>
+    <string name="update">Update</string>
+    <string name="sign_out">Sign Out</string>
 
 </resources>

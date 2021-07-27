@@ -1,12 +1,16 @@
 package ge.njebirashvili.freeunifinalproject.repository
 
+import android.net.Uri
 import android.text.BoringLayout
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import ge.njebirashvili.freeunifinalproject.model.Message
+import ge.njebirashvili.freeunifinalproject.model.UpdateProfile
 import ge.njebirashvili.freeunifinalproject.model.User
+import ge.njebirashvili.freeunifinalproject.utils.Constants.DEFAULT_PROFILE_IMAGE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -73,7 +77,7 @@ class MainRepository @Inject constructor(
     suspend fun searchUser(query: String) = withContext(Dispatchers.IO) {
         val userResult = usersRef.whereGreaterThanOrEqualTo(
             "username",
-            query.uppercase(Locale.ROOT)
+            query
         )
             .get().await().toObjects(User::class.java)
         userResult
@@ -101,6 +105,37 @@ class MainRepository @Inject constructor(
     suspend fun getAllUser() = withContext(Dispatchers.IO) {
         val usersList = usersRef.get().await().toObjects(User::class.java)
         usersList
+    }
+
+    suspend fun userLogOut() = withContext(Dispatchers.IO) {
+        auth.signOut()
+    }
+
+
+    suspend fun updateProfile(UpdateProfile: UpdateProfile)=
+        withContext(Dispatchers.IO) {
+            val imageUrl = UpdateProfile.profilePictureUrl?.let { uri ->
+                updateProfilePicture(uri).toString()
+            }
+            val map = mutableMapOf(
+                "username" to UpdateProfile.username,
+                "whatIDo" to UpdateProfile.whatIDo
+            )
+            imageUrl?.let { url ->
+                map["profilePictureUrl"] = url
+            }
+            usersRef.document(auth.uid!!).update(map.toMap()).await()
+            Any()
+        }
+
+    private suspend fun updateProfilePicture(imageUri: Uri) = withContext(Dispatchers.IO) {
+        val user = getUser(auth.uid!!)
+        if (user?.profilePictureUrl != DEFAULT_PROFILE_IMAGE) {
+            storage.getReferenceFromUrl(user!!.profilePictureUrl).delete().await()
+        }
+        val url = storage.getReference(auth.uid!!).putFile(imageUri)
+            .await().metadata?.reference?.downloadUrl?.await()
+        url
     }
 
 

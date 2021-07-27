@@ -41,7 +41,7 @@
         app:layout_constraintWidth_percent=".50" />
 
     <EditText
-        android:id="@+id/nickname_edit_text"
+        android:id="@+id/nicknameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -64,7 +64,7 @@
         android:hint="@string/email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nickname_edit_text" />
+        app:layout_constraintTop_toBottomOf="@+id/nicknameEditText" />
 
     <EditText
         android:id="@+id/password_edit_text"
