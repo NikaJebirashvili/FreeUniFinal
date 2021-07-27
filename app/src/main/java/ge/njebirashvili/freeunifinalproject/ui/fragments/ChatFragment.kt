@@ -5,11 +5,14 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomappbar.BottomAppBar
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,25 +25,29 @@ import ge.njebirashvili.freeunifinalproject.databinding.FragmentChatListBinding
 import ge.njebirashvili.freeunifinalproject.model.User
 import ge.njebirashvili.freeunifinalproject.presenter.ChatListPresenter
 import ge.njebirashvili.freeunifinalproject.repository.MainRepository
+import ge.njebirashvili.freeunifinalproject.ui.MainActivity
 import ge.njebirashvili.freeunifinalproject.utils.Constants.SEARCH_TIME_DELAY
 import ge.njebirashvili.freeunifinalproject.utils.setVisible
 import ge.njebirashvili.freeunifinalproject.views.ChatListView
+import ge.njebirashvili.freeunifinalproject.views.MainHelper
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
+class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView  {
     lateinit var binding: FragmentChatListBinding
     @Inject lateinit var auth: FirebaseAuth
     @Inject lateinit var firestore: FirebaseFirestore
     @Inject lateinit var storage: FirebaseStorage
     @Inject lateinit var realtime : FirebaseDatabase
     lateinit var chatListPresenter: ChatListPresenter
+    val helper = MainActivity()
     val chatListAdapter = ChatListAdapter()
     val searchListAdapter = SearchAdapter()
     lateinit var currentUser : User
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,6 +60,12 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        activity?.findViewById<BottomAppBar>(R.id.bottom_app_bar)?.setVisible(true)
+        activity?.findViewById<FloatingActionButton>(R.id.floating_action_button)?.setVisible(true)
+        activity?.findViewById<FrameLayout>(R.id.main_activity_frame).also {
+            it?.setPadding(0, 0, 0, 56)
+        }
 
         chatListPresenter = ChatListPresenter(this, MainRepository(auth, firestore, storage,realtime))
         initUserRecyclerView()
@@ -127,6 +140,4 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView {
             }
         }
     }
-
-
 }

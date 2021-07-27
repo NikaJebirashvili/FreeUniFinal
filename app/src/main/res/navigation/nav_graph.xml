@@ -10,6 +10,9 @@
         <action
             android:id="@+id/action_chatFragment_to_messagesFragment"
             app:destination="@id/messagesFragment" />
+        <action
+            android:id="@+id/action_chatFragment_to_addNewContactFragment"
+            app:destination="@id/addNewContactFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -23,5 +26,16 @@
             android:name="user"
             app:argType="ge.njebirashvili.freeunifinalproject.model.User" />
     </fragment>
+    <fragment
+        android:id="@+id/addNewContactFragment"
+        android:name="ge.njebirashvili.freeunifinalproject.ui.fragments.AddNewContactFragment"
+        android:label="AddNewContactFragment" >
+        <action
+            android:id="@+id/action_addNewContactFragment_to_messagesFragment"
+            app:destination="@id/messagesFragment" />
+    </fragment>
+
+    <action android:id="@+id/globalActionToAllUsers"
+        app:destination="@+id/addNewContactFragment"/>
 
 </navigation>

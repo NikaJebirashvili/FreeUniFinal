@@ -34,11 +34,12 @@ class MainRepository @Inject constructor(
         user
     }
 
-    suspend fun toggleFollowForUser(uid: String) : Boolean = withContext(Dispatchers.IO) {
+    suspend fun toggleFollowForUser(uid: String): Boolean = withContext(Dispatchers.IO) {
         var isFollowing = false
         firestore.runTransaction { transaction ->
             val currentUid = auth.uid!!
-            val currentUser = transaction.get(usersRef.document(currentUid)).toObject(User::class.java)!!
+            val currentUser =
+                transaction.get(usersRef.document(currentUid)).toObject(User::class.java)!!
             isFollowing = uid in currentUser.follows
             val newFollows: List<String> =
                 if (!isFollowing) currentUser.follows + uid else currentUser.follows
@@ -47,12 +48,24 @@ class MainRepository @Inject constructor(
         !isFollowing
     }
 
-    suspend fun toggleLastSentMessage(message: Message) = withContext(Dispatchers.IO){
+    suspend fun toggleLastSentMessage(message: Message) = withContext(Dispatchers.IO) {
         firestore.runTransaction { transaction ->
             transaction.update(usersRef.document(auth.uid!!), "lastSentMessage", message.message)
-            transaction.update(usersRef.document(auth.uid!!), "lastSentMessageDate", message.sentDate)
-            transaction.update(usersRef.document(message.sender), "lastSentMessage", message.message)
-            transaction.update(usersRef.document(message.sender), "lastSentMessageDate", message.sentDate)
+            transaction.update(
+                usersRef.document(auth.uid!!),
+                "lastSentMessageDate",
+                message.sentDate
+            )
+            transaction.update(
+                usersRef.document(message.sender),
+                "lastSentMessage",
+                message.message
+            )
+            transaction.update(
+                usersRef.document(message.sender),
+                "lastSentMessageDate",
+                message.sentDate
+            )
         }
     }
 
@@ -83,7 +96,11 @@ class MainRepository @Inject constructor(
             chatMessages.add(mes!!)
         }
         chatMessages
+    }
 
+    suspend fun getAllUser() = withContext(Dispatchers.IO) {
+        val usersList = usersRef.get().await().toObjects(User::class.java)
+        usersList
     }
 
 
