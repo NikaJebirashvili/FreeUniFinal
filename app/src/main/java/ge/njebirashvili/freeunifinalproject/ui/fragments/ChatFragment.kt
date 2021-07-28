@@ -75,8 +75,11 @@ class ChatFragment : Fragment(R.layout.fragment_chat_list), ChatListView  {
 
         lifecycleScope.launch {
             currentUser = chatListPresenter.getUser(auth.uid!!)!!
-            val list = chatListPresenter.getAllFollowedUsers(currentUser.follows)
-            chatListAdapter.setData(list)
+            if(currentUser.follows.isNotEmpty()){
+                val list = chatListPresenter.getAllFollowedUsers(currentUser.follows)
+                chatListAdapter.setData(list)
+            }
+
         }
 
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
